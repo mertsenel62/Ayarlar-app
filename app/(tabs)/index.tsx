@@ -1,98 +1,144 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
-
+const settingsOptions = [
+  { id: '1', name: 'Profil Bilgileri', icon: 'person-outline', color: '#007AFF', bgColor: '#E1F0FF' },
+  { id: '2', name: 'Bildirim Ayarları', icon: 'notifications-outline', color: '#FF9500', bgColor: '#FFF4E5' },
+  { id: '3', name: 'Güvenlik ve Şifre', icon: 'shield-checkmark-outline', color: '#34C759', bgColor: '#E8F9EE' },
+  { id: '4', name: 'Dil Seçenekleri', icon: 'globe-outline', color: '#5856D6', bgColor: '#EFEEFA' },
+  { id: '5', name: 'Karanlık Mod', icon: 'moon-outline', color: '#1C1C1E', bgColor: '#F2F2F7' },
+  { id: '6', name: 'Yardım ve Destek', icon: 'help-circle-outline', color: '#FF2D55', bgColor: '#FFE9ED' },
+];
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton}>
+          <Ionicons name="chevron-back" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <View style={styles.content}>
+        <Text style={styles.title}>Ayarlar</Text>
+        
+        <Text style={styles.sectionTitle}>Hesap ve Uygulama</Text>
+
+        <View style={styles.card}>
+          {settingsOptions.map((item, index) => (
+            <View key={item.id}>
+              <View style={styles.listItem}>
+                <View style={styles.itemLeft}>
+                  <View style={[styles.iconCircle, { backgroundColor: item.bgColor }]}>
+                    <Ionicons name={item.icon as any} size={22} color={item.color} />
+                  </View>
+                  <Text style={[styles.itemText, { color: '#333' }]}> 
+                    {item.name}
+                  </Text>
+                </View>
+                
+                <TouchableOpacity>
+                  <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+                </TouchableOpacity>
+              </View>
+
+              {index !== settingsOptions.length - 1 && <View style={styles.separator} />}
+            </View>
+          ))}
+        </View>
+      </View>
+        
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: '#F9F9FB', 
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop:10,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  content: {
+    paddingHorizontal: 25,
+    marginTop: 30,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    marginTop: 30,
+    marginBottom: 15,
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  listItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 10,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  itemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  iconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  itemText: {
+    fontSize: 15,
+    color: '#8E8E93',
+    fontWeight: '500',
+  },
+  sendButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#007AFF', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#F2F2F7',
+    marginHorizontal: 15,
   },
 });
