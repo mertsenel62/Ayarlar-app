@@ -1,7 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+
+const { width, height } = Dimensions.get('window');
 
 const settingsOptions = [
   { id: '1', name: 'Profil Bilgileri', icon: 'person-outline', color: '#007AFF', bgColor: '#E1F0FF' },
@@ -39,7 +42,7 @@ export default function HomeScreen() {
                 </View>
                 
                 <TouchableOpacity>
-                  <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+                  <Ionicons name="chevron-forward" size={20} color="#000000f8" />
                 </TouchableOpacity>
               </View>
 
@@ -62,8 +65,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop:10,
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(10),
   },
   backButton: {
     width: 40,
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   title: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     fontWeight: 'bold',
     color: '#000',
   },
@@ -95,33 +98,41 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   card: {
+    width: width * 0.9, 
+    alignSelf: 'center', 
     backgroundColor: '#fff',
     borderRadius: 20,
     padding: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    paddingVertical: verticalScale(12),
+    paddingHorizontal: scale(10),
   },
   itemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   iconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(20),
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
+    marginRight: scale(15),
   },
   itemText: {
     fontSize: 15,
