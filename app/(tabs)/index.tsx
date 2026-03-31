@@ -2,19 +2,22 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 
 const settingsOptions = [
-  { id: '1', name: 'Profil Bilgileri', icon: 'person-outline', color: '#007AFF', bgColor: '#E1F0FF' },
-  { id: '2', name: 'Bildirim Ayarları', icon: 'notifications-outline', color: '#FF9500', bgColor: '#FFF4E5' },
-  { id: '3', name: 'Güvenlik ve Şifre', icon: 'shield-checkmark-outline', color: '#34C759', bgColor: '#E8F9EE' },
-  { id: '4', name: 'Dil Seçenekleri', icon: 'globe-outline', color: '#5856D6', bgColor: '#EFEEFA' },
-  { id: '5', name: 'Karanlık Mod', icon: 'moon-outline', color: '#1C1C1E', bgColor: '#F2F2F7' },
-  { id: '6', name: 'Yardım ve Destek', icon: 'help-circle-outline', color: '#FF2D55', bgColor: '#FFE9ED' },
+  { id: '1', name: 'Bildirim Ayarları', icon: 'notifications-outline', color: '#FF9500', bgColor: '#FFF4E5' },
+  { id: '2', name: 'Şifre Değiştir', icon: 'shield-checkmark-outline', color: '#34C759', bgColor: '#E8F9EE' },
+  { id: '3', name: 'Dil Seçenekleri', icon: 'globe-outline', color: '#5856D6', bgColor: '#EFEEFA' },
+  { id: '4', name: 'Karanlık Mod', icon: 'moon-outline', color: '#1C1C1E', bgColor: '#F2F2F7' },
+  { id: '5', name: 'Yardım ve Destek', icon: 'help-circle-outline', color: '#FF2D55', bgColor: '#FFE9ED' },
 ];
+
 export default function HomeScreen() {
+  const router = useRouter();
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -28,28 +31,33 @@ export default function HomeScreen() {
         
         <Text style={styles.sectionTitle}>Hesap ve Uygulama</Text>
 
-        <View style={styles.card}>
-          {settingsOptions.map((item, index) => (
-            <View key={item.id}>
-              <View style={styles.listItem}>
-                <View style={styles.itemLeft}>
-                  <View style={[styles.iconCircle, { backgroundColor: item.bgColor }]}>
-                    <Ionicons name={item.icon as any} size={22} color={item.color} />
-                  </View>
-                  <Text style={[styles.itemText, { color: '#333' }]}> 
-                    {item.name}
-                  </Text>
+      <View style={styles.card}>
+        {settingsOptions.map((item, index) => (
+          <View key={item.id}>
+            {/* TouchableOpacity'yi tüm satırı kaplayacak şekilde güncelledik */}
+            <TouchableOpacity 
+              style={styles.listItem}
+              onPress={() => {
+                if (item.id === '2') {
+                  // change-password.tsx (tabs) içinde olduğu için başına / ekleyerek git
+                  router.push('/change-password');
+                }
+              }}
+            >
+              <View style={styles.itemLeft}>
+                <View style={[styles.iconCircle, { backgroundColor: item.bgColor }]}>
+                  <Ionicons name={item.icon as any} size={22} color={item.color} />
                 </View>
-                
-                <TouchableOpacity>
-                  <Ionicons name="chevron-forward" size={20} color="#000000f8" />
-                </TouchableOpacity>
+                <Text style={[styles.itemText, { color: '#333' }]}>{item.name}</Text>
               </View>
+              
+              <Ionicons name="chevron-forward" size={20} color="#CCC" />
+            </TouchableOpacity>
 
-              {index !== settingsOptions.length - 1 && <View style={styles.separator} />}
-            </View>
-          ))}
-        </View>
+            {index !== settingsOptions.length - 1 && <View style={styles.separator} />}
+          </View>
+        ))}
+      </View>
       </View>
         
     </SafeAreaView>
